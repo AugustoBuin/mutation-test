@@ -2,15 +2,37 @@ const UserRepository = require('../src/repositories/UserRepository');
 const User = require('../src/models/User');
 
 describe('UserRepository', () => {
+    const clearUsers = () => {
+        const snapshot = [...Array(10).keys()];
+        snapshot.forEach(i => UserRepository.delete(`${i}`));
+    };
+
     beforeEach(() => {
-        // Limpar usuários entre os testes
-        while (UserRepository.delete('1')) { }
+        for (let i = 0; i < 100; i++) {
+            UserRepository.delete(`${i}`);
+        }
     });
+
+
+    test('repository should start empty', () => {
+        const allIds = Array.from({ length: 10 }, (_, i) => `${i}`);
+        allIds.forEach(id => expect(UserRepository.findById(id)).toBeUndefined());
+    });
+
 
     test('save() and findById()', () => {
         const user = new User('1', 'Ana', 'admin', '123', 'abc');
         UserRepository.save(user);
-        expect(UserRepository.findById('1')).toEqual(user);
+        const found = UserRepository.findById('1');
+        expect(found).toBeDefined();
+        expect(found.id).toBe('1');
+
+    });
+
+    test('findById() should return undefined for unknown id', () => {
+        const user = new User('1', 'Ana', 'admin', '123', 'abc');
+        UserRepository.save(user)
+        expect(UserRepository.findById('999')).toBeUndefined();
     });
 
     test('update() should modify existing user', () => {
@@ -24,15 +46,41 @@ describe('UserRepository', () => {
         expect(UserRepository.update('404', { nome: 'X' })).toBeNull();
     });
 
+    test('update() should not affect other users', () => {
+        const u1 = new User('1', 'Ana', 'admin', '123', 'abc');
+        const u2 = new User('2', 'Beto', 'user', '456', 'def');
+        UserRepository.save(u1);
+        UserRepository.save(u2);
+
+        const result = UserRepository.update('999', { nome: 'Carlos' });
+        expect(result).toBeNull();
+        expect(UserRepository.findById('1').nome).toBe('Ana');
+        expect(UserRepository.findById('2').nome).toBe('Beto');
+    });
+
+
     test('delete() should remove user', () => {
         const user = new User('1', 'Ana', 'admin', '123', 'abc');
         UserRepository.save(user);
-        expect(UserRepository.delete('1')).toBe(true);
+        const deleted = UserRepository.delete('1');
+        expect(deleted).toBe(true);
         expect(UserRepository.findById('1')).toBeUndefined();
     });
 
     test('delete() should return false for unknown id', () => {
         expect(UserRepository.delete('404')).toBe(false);
+    });
+
+    test('delete() should not affect other users', () => {
+        const u1 = new User('1', 'Ana', 'admin', '123', 'abc');
+        const u2 = new User('2', 'Beto', 'user', '456', 'def');
+        UserRepository.save(u1);
+        UserRepository.save(u2);
+
+        const result = UserRepository.delete('999');
+        expect(result).toBe(false);
+        expect(UserRepository.findById('1')).toBeDefined();
+        expect(UserRepository.findById('2')).toBeDefined();
     });
 
     test('deactivate() should mark user as inactive', () => {

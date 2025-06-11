@@ -1,28 +1,35 @@
 const User = require('../src/models/User');
 
 describe('User model', () => {
-    test('should create valid user', () => {
+    test('should create valid user and default ativo to true', () => {
         const user = new User('1', 'Ana', 'admin', '123', 'abc');
         expect(user).toBeInstanceOf(User);
+        expect(user.ativo).toBe(true);
     });
 
-    test('should throw error if id is missing', () => {
-        expect(() => new User(null, 'Ana', 'admin', '123', 'abc')).toThrow();
+    test('should throw error with correct message if id is missing', () => {
+        expect(() => { new User(undefined, 'Ana', 'admin', '123', 'abc') })
+            .toThrow('Todos os campos são obrigatórios.');
     });
 
-    test('should throw error if nome is missing', () => {
-        expect(() => new User('1', null, 'admin', '123', 'abc')).toThrow();
+    test('should throw error with correct message if nome is missing', () => {
+        expect(() => { new User('1', undefined, 'admin', '123', 'abc') })
+            .toThrow('Todos os campos são obrigatórios.');
     });
 
-    test('should throw error if nivelAcesso is missing', () => {
-        expect(() => new User('1', 'Ana', null, '123', 'abc')).toThrow();
+    test('should throw error with correct message if nivelAcesso is missing', () => {
+        expect(() => { new User('1', 'Ana', undefined, '123', 'abc') })
+            .toThrow('Todos os campos são obrigatórios.');
     });
 
-    test('should throw error if cpf is missing', () => {
-        expect(() => new User('1', 'Ana', 'admin', null, 'abc')).toThrow();
+    test('should throw error with correct message if cpf is missing', () => {
+        expect(() => { new User('1', 'Ana', 'admin', undefined, 'abc') })
+            .toThrow('Todos os campos são obrigatórios.');
     });
 
-    test('should throw error if senha is missing', () => {
-        expect(() => new User('1', 'Ana', 'admin', '123', null)).toThrow();
+    test('should throw error with correct message if senha is missing', () => {
+        expect(() => { new User('1', 'Ana', 'admin', '123', undefined) })
+            .toThrow('Todos os campos são obrigatórios.');
     });
+
 });
