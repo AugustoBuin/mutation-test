@@ -18,18 +18,21 @@ class UserController {
         res.json(user);
     }
 
+    // Updates a user; returns 200 with new data or 404 if not found
     update(req, res) {
         const user = userService.updateUser(req.params.id, req.body);
         if (!user) return res.status(404).json({ error: 'User not found.' });
         res.json(user);
     }
 
+    // Deletes a user; returns 204 if successful or 404 if not found
     delete(req, res) {
         const success = userService.deleteUser(req.params.id);
         if (!success) return res.status(404).json({ error: 'User not found.' });
         res.status(204).send();
     }
 
+    // Deactivates a user (sets active to false); returns updated user or 404 if not found
     deactivate(req, res) {
         const user = userService.deactivateUser(req.params.id);
         if (!user) return res.status(404).json({ error: 'User not found.' });
