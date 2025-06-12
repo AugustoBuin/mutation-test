@@ -6,6 +6,7 @@ jest.mock('../src/services/UserService');
 describe('UserController', () => {
     let req, res;
 
+    // Prepares a fresh request/response object for each test
     beforeEach(() => {
         req = { params: {}, body: {} };
         res = {
@@ -16,6 +17,7 @@ describe('UserController', () => {
         jest.clearAllMocks();
     });
 
+    // Verifies successful creation and error handling for invalid input
     test('create() should return 201 with created user', () => {
         const mockUser = { id: '1', nome: 'Ana', nivelAcesso: 'admin', cpf: '123', senha: 'abc' };
         req.body = mockUser;
@@ -38,7 +40,7 @@ describe('UserController', () => {
         expect(res.json).toHaveBeenCalledWith({ error: error.message });
     });
 
-
+    // Confirms user is returned when found, and 404 when not
     test('read() should return user', () => {
         const mockUser = { id: '1', nome: 'Ana' };
         req.params.id = '1';
@@ -59,6 +61,7 @@ describe('UserController', () => {
         expect(res.json).toHaveBeenCalledWith({ error: 'User not found.' });
     });
 
+    // Confirms updates are successful or return 404
     test('update() should return updated user', () => {
         const mockUser = { id: '1', nome: 'Novo Nome' };
         req.params.id = '1';
@@ -80,6 +83,7 @@ describe('UserController', () => {
         expect(res.json).toHaveBeenCalledWith({ error: 'User not found.' });
     });
 
+    // Tests deletion success and 404 on unknown user
     test('delete() should return 204 successful', () => {
         req.params.id = '1';
         userService.deleteUser.mockReturnValue(true);
@@ -100,6 +104,7 @@ describe('UserController', () => {
         expect(res.json).toHaveBeenCalledWith({ error: 'User not found.' });
     });
 
+    // Ensures deactivation works and returns appropriate response
     test('deactivate() should return deactivated user', () => {
         const mockUser = { id: '1', ativo: false };
         req.params.id = '1';

@@ -7,19 +7,20 @@ describe('UserRepository', () => {
         snapshot.forEach(i => UserRepository.delete(`${i}`));
     };
 
+    // Clears repository before every test
     beforeEach(() => {
         for (let i = 0; i < 100; i++) {
             UserRepository.delete(`${i}`);
         }
     });
 
-
+    // Ensures no users exist before start
     test('repository should start empty', () => {
         const allIds = Array.from({ length: 10 }, (_, i) => `${i}`);
         allIds.forEach(id => expect(UserRepository.findById(id)).toBeUndefined());
     });
 
-
+    // Confirms user can be stored and retrieved
     test('save() and findById()', () => {
         const user = new User('1', 'Ana', 'admin', '123', 'abc');
         UserRepository.save(user);
@@ -35,6 +36,7 @@ describe('UserRepository', () => {
         expect(UserRepository.findById('999')).toBeUndefined();
     });
 
+    // Ensures updates modify correct user or return null
     test('update() should modify existing user', () => {
         const user = new User('1', 'Ana', 'admin', '123', 'abc');
         UserRepository.save(user);
@@ -58,7 +60,7 @@ describe('UserRepository', () => {
         expect(UserRepository.findById('2').nome).toBe('Beto');
     });
 
-
+    // Checks if user removal works and doesn't affect others
     test('delete() should remove user', () => {
         const user = new User('1', 'Ana', 'admin', '123', 'abc');
         UserRepository.save(user);
@@ -83,6 +85,7 @@ describe('UserRepository', () => {
         expect(UserRepository.findById('2')).toBeDefined();
     });
 
+    // Ensures user is marked inactive or returns null if not found
     test('deactivate() should mark user as inactive', () => {
         const user = new User('1', 'Ana', 'admin', '123', 'abc');
         UserRepository.save(user);

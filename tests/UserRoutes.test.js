@@ -17,20 +17,21 @@ describe('User Routes', () => {
         senha: '123'
     };
 
+    // Clean repository before each test
     beforeEach(() => {
-        // Clean repository before each test
         for (let i = 0; i < 100; i++) {
             UserRepository.delete(`${i}`);
         }
         UserRepository.delete(testUser.id);
     });
 
+    // Verifies unknown route returns 404.
     test('invalid route should return 404', async () => {
         const res = await request(app).post('/').send({});
         expect(res.statusCode).toBe(404);
     });
 
-
+    // Validates both successful and failed user creation.
     test('POST /users - should create a user', async () => {
         const res = await request(app)
             .post('/users')
@@ -42,11 +43,12 @@ describe('User Routes', () => {
     test('POST /users - should fail with invalid data', async () => {
         const res = await request(app)
             .post('/users')
-            .send({ id: '1' }); // incomplete
+            .send({ id: '1' }); // incomplete data 
         expect(res.statusCode).toBe(400);
         expect(res.body).toHaveProperty('error');
     });
 
+    // Ensures existing user is retrieved and 404 for non-existent
     test('GET /users/:id - should return existing user', async () => {
         UserRepository.save({ ...testUser });
         const res = await request(app).get(`/users/${testUser.id}`);
@@ -59,6 +61,7 @@ describe('User Routes', () => {
         expect(res.statusCode).toBe(404);
     });
 
+    // Confirms user is updated properly
     test('PUT /users/:id - should update user', async () => {
         UserRepository.save({ ...testUser });
         const res = await request(app)
@@ -68,12 +71,14 @@ describe('User Routes', () => {
         expect(res.body.nome).toBe('New Name');
     });
 
+    // Confirms deletion
     test('DELETE /users/:id - should delete user', async () => {
         UserRepository.save({ ...testUser });
         const res = await request(app).delete(`/users/${testUser.id}`);
         expect(res.statusCode).toBe(204);
     });
 
+    // Confirms deactivation functionality
     test('PATCH /users/:id/deactivate - should deactivate user', async () => {
         UserRepository.save({ ...testUser });
         const res = await request(app).patch(`/users/${testUser.id}/deactivate`);
