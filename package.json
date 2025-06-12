@@ -1,4 +1,11 @@
 {
+  "name": "mutation-test",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "npx jest",
+    "stryker": "npx stryker run",
+    "open:mutation": "node open-report.js"
+  },
   "dependencies": {
     "express": "^5.1.0"
   },
