@@ -12,25 +12,25 @@ class UserController {
 
     read(req, res) {
         const user = userService.getUser(req.params.id);
-        if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+        if (!user) return res.status(404).json({ error: 'User not found.' });
         res.json(user);
     }
 
     update(req, res) {
         const user = userService.updateUser(req.params.id, req.body);
-        if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+        if (!user) return res.status(404).json({ error: 'User not found.' });
         res.json(user);
     }
 
     delete(req, res) {
         const success = userService.deleteUser(req.params.id);
-        if (!success) return res.status(404).json({ error: 'Usuário não encontrado.' });
+        if (!success) return res.status(404).json({ error: 'User not found.' });
         res.status(204).send();
     }
 
     deactivate(req, res) {
         const user = userService.deactivateUser(req.params.id);
-        if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+        if (!user) return res.status(404).json({ error: 'User not found.' });
         res.json(user);
     }
 }

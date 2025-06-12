@@ -1,7 +1,7 @@
 class User {
     constructor(id, nome, nivelAcesso, cpf, senha, ativo = true) {
         if (!id || !nome || !nivelAcesso || !cpf || !senha) {
-            throw new Error('Todos os campos são obrigatórios.');
+            throw new Error('All fields are required.');
         }
         this.id = id;
         this.nome = nome;

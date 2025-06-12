@@ -16,7 +16,7 @@ describe('UserController', () => {
         jest.clearAllMocks();
     });
 
-    test('create() deve retornar 201 com usuário criado', () => {
+    test('create() should return 201 with created user', () => {
         const mockUser = { id: '1', nome: 'Ana', nivelAcesso: 'admin', cpf: '123', senha: 'abc' };
         req.body = mockUser;
         userService.createUser.mockReturnValue(mockUser);
@@ -29,7 +29,7 @@ describe('UserController', () => {
 
     test('create() should handle errors', () => {
         req.body = {};
-        const error = new Error('Todos os campos são obrigatórios.');
+        const error = new Error('All fields are required.');
         userService.createUser.mockImplementation(() => { throw error; });
 
         userController.create(req, res);
@@ -56,7 +56,7 @@ describe('UserController', () => {
         userController.read(req, res);
 
         expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.json).toHaveBeenCalledWith({ error: 'Usuário não encontrado.' });
+        expect(res.json).toHaveBeenCalledWith({ error: 'User not found.' });
     });
 
     test('update() should return updated user', () => {
@@ -77,7 +77,7 @@ describe('UserController', () => {
         userController.update(req, res);
 
         expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.json).toHaveBeenCalledWith({ error: 'Usuário não encontrado.' });
+        expect(res.json).toHaveBeenCalledWith({ error: 'User not found.' });
     });
 
     test('delete() should return 204 successful', () => {
@@ -97,10 +97,10 @@ describe('UserController', () => {
         userController.delete(req, res);
 
         expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.json).toHaveBeenCalledWith({ error: 'Usuário não encontrado.' });
+        expect(res.json).toHaveBeenCalledWith({ error: 'User not found.' });
     });
 
-    test('deactivate() deve retornar usuário desativado', () => {
+    test('deactivate() should return deactivated user', () => {
         const mockUser = { id: '1', ativo: false };
         req.params.id = '1';
         userService.deactivateUser.mockReturnValue(mockUser);
@@ -117,6 +117,6 @@ describe('UserController', () => {
         userController.deactivate(req, res);
 
         expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.json).toHaveBeenCalledWith({ error: 'Usuário não encontrado.' });
+        expect(res.json).toHaveBeenCalledWith({ error: 'User not found.' });
     });
 });
