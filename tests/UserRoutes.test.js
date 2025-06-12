@@ -42,7 +42,7 @@ describe('User Routes', () => {
     test('POST /users - should fail with invalid data', async () => {
         const res = await request(app)
             .post('/users')
-            .send({ id: '1' }); // incompleto
+            .send({ id: '1' }); // incomplete
         expect(res.statusCode).toBe(400);
         expect(res.body).toHaveProperty('error');
     });
@@ -63,9 +63,9 @@ describe('User Routes', () => {
         UserRepository.save({ ...testUser });
         const res = await request(app)
             .put(`/users/${testUser.id}`)
-            .send({ nome: 'Novo Nome' });
+            .send({ nome: 'New Name' });
         expect(res.statusCode).toBe(200);
-        expect(res.body.nome).toBe('Novo Nome');
+        expect(res.body.nome).toBe('New Name');
     });
 
     test('DELETE /users/:id - should delete user', async () => {

@@ -1,6 +1,8 @@
 const userService = require('../services/UserService');
 
+// Handles user-related HTTP requests by calling the service layer.
 class UserController {
+    // Creates a user and returns it with status 201, or error 400 if validation fails
     create(req, res) {
         try {
             const user = userService.createUser(req.body);
@@ -9,7 +11,7 @@ class UserController {
             res.status(400).json({ error: error.message });
         }
     }
-
+    // Fetches user by ID; returns 200 with data or 404 if not found
     read(req, res) {
         const user = userService.getUser(req.params.id);
         if (!user) return res.status(404).json({ error: 'User not found.' });
