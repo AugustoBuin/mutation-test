@@ -126,13 +126,13 @@ npx styker run
 Open the generated HTML report:
 
 ```bash
-open reports/mutation/mutation.html
+npm run open:mutation
 ```
 
-Or navigate to:
+Or directly:
 
-```
-file:///absolute-path-to-your-project/reports/mutation/mutation.html
+```bash
+node open-report.js
 ```
 
 ### Mutation Testing Explained
