@@ -1,6 +1,6 @@
 const request = require('supertest');
 const express = require('express');
-const userRoutes = require('../src/routes/UserRoutes');
+const userRoutes = require('../src/routes/userRoutes');
 const UserRepository = require('../src/repositories/UserRepository');
 
 // Simulating the real app
